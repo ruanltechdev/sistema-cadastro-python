@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+contatos.db
+contatos.db-shm
+contatos.db-wal
+.idea/
+.vscode/
+
