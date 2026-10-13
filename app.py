@@ -165,13 +165,26 @@ class ContactApp:
         self.refresh_contacts()
 
     def refresh_contacts(self) -> None:
+        selected_id = self.selected_id
         for item in self.table.get_children():
             self.table.delete(item)
-        for contact in self.store.list_contacts(self.search_var.get()):
+        contacts = self.store.list_contacts(self.search_var.get())
+        visible_ids = set()
+        for contact in contacts:
+            contact_id = str(contact["id"])
+            visible_ids.add(contact_id)
             self.table.insert(
-                "", "end", iid=str(contact["id"]),
+                "", "end", iid=contact_id,
                 values=(contact["name"], contact["email"], contact["phone"]),
             )
+
+        if selected_id is not None:
+            selected_item = str(selected_id)
+            if selected_item in visible_ids:
+                self.table.selection_set(selected_item)
+                self.table.focus(selected_item)
+            else:
+                self.clear_form()
 
     def select_contact(self, _event: tk.Event | None = None) -> None:
         selection = self.table.selection()
